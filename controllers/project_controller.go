@@ -20,6 +20,10 @@ func ProjectNew(r render.Render) {
 	r.HTML(200, "projects/new", project)
 }
 
-//func ProjectCreate(db *mgo.Database, r render.Render) {
-//
-//}
+func ProjectCreate(db *mgo.Database, r render.Render, p models.Project) {
+	err := db.C("projects").Insert(p)
+	if err != nil {
+		panic(err)
+	}
+	r.Redirect("/projects")
+}

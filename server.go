@@ -3,7 +3,9 @@ package main
 import (
 	"github.com/codegangsta/martini"
 	"github.com/codegangsta/martini-contrib/render"
+	"github.com/3d0c/martini-contrib/binding"
 	"github.com/jerryclinesmith/notabbble/controllers"
+	"github.com/jerryclinesmith/notabbble/models"
 )
 
 func main() {
@@ -18,6 +20,7 @@ func main() {
 	})
 	m.Get("/projects", controllers.ProjectIndex)
 	m.Get("/projects/new", controllers.ProjectNew)
+	m.Post("/projects", binding.Bind(models.Project{}), controllers.ProjectCreate)
 
 	m.Run()
 }
