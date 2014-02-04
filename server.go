@@ -2,15 +2,17 @@ package main
 
 import (
 	"github.com/codegangsta/martini"
+	"github.com/codegangsta/martini-contrib/binding"
 	"github.com/codegangsta/martini-contrib/render"
-	"github.com/3d0c/martini-contrib/binding"
 	"github.com/jerryclinesmith/notabbble/controllers"
+	"github.com/jerryclinesmith/notabbble/db"
 	"github.com/jerryclinesmith/notabbble/models"
 )
 
 func main() {
 	m := martini.Classic()
-	m.Use(DB())
+	m.Map(db.Connect())
+
 	m.Use(render.Renderer(render.Options{
 		Layout: "layout",
 	}))

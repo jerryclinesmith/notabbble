@@ -1,16 +1,15 @@
 package models
 
 import (
-	"labix.org/v2/mgo/bson"
 	"github.com/codegangsta/martini-contrib/binding"
+	"time"
 )
 
 type Project struct {
-	Id   bson.ObjectId `bson:"_id,omitempty"`
-	Name string        `bson:"name" form:"projectName" binding:"required"`
-	//Created int64
-	//Updated int64
-	//OwnerId int64
+	Id        int64
+	Name      string `sql:"size:255;not null;unique" form:"projectName" binding:"required"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func (p Project) Validate(errors *binding.Errors) {

@@ -3,15 +3,12 @@ package controllers
 import (
 	"github.com/codegangsta/martini-contrib/render"
 	"github.com/jerryclinesmith/notabbble/models"
-	"labix.org/v2/mgo"
+	"github.com/jinzhu/gorm"
 )
 
-func ProjectIndex(db *mgo.Database, r render.Render) {
+func ProjectIndex(db gorm.DB, r render.Render) {
 	var projects []models.Project
-	err := db.C("projects").Find(nil).All(&projects)
-	if err != nil {
-		panic(err)
-	}
+	db.Find(&projects)
 	r.HTML(200, "projects/index", projects)
 }
 
@@ -20,10 +17,7 @@ func ProjectNew(r render.Render) {
 	r.HTML(200, "projects/new", project)
 }
 
-func ProjectCreate(db *mgo.Database, r render.Render, p models.Project) {
-	err := db.C("projects").Insert(p)
-	if err != nil {
-		panic(err)
-	}
+func ProjectCreate(db gorm.DB, r render.Render, p models.Project) {
+	db.Save(p)
 	r.Redirect("/projects")
 }
