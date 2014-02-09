@@ -16,7 +16,7 @@ func Connect() gorm.DB {
 	}
 
 	db.AutoMigrate(models.Project{})
-	db.LogMode(true)
+	// db.LogMode(true) // TODO: for dev only
 
 	return db
 }
