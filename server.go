@@ -7,9 +7,15 @@ import (
 	"github.com/jerryclinesmith/notabbble/controllers"
 	"github.com/jerryclinesmith/notabbble/db"
 	"github.com/jerryclinesmith/notabbble/models"
+	"github.com/joho/godotenv"
 )
 
 func InitServer() *martini.ClassicMartini {
+	err := godotenv.Load(martini.Env + ".env")
+	if err != nil {
+		panic("Error loading .env file")
+	}
+
 	m := martini.Classic()
 	m.Map(db.Connect())
 
