@@ -1,6 +1,6 @@
 box: wercker/golang
 services:
-	- wercker/postgres
+	- wercker/postgresql
 # Build definition
 build:
   # The steps that will be executed on build
@@ -27,4 +27,4 @@ build:
     - script:
         name: go test
         code: |
-          go test ./...
+          MARTINI_ENV=test go test ./...
