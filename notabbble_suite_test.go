@@ -1,9 +1,9 @@
-package notabbble_test
+package main_test
 
 import (
 	"bytes"
 	"github.com/codegangsta/martini"
-	"github.com/jerryclinesmith/notabbble"
+	notabbble "github.com/jerryclinesmith/notabbble"
 	"github.com/jerryclinesmith/notabbble/db"
 	"github.com/jerryclinesmith/notabbble/models"
 	"github.com/jinzhu/gorm"
@@ -26,8 +26,6 @@ func TestNotabbble(t *testing.T) {
 	TestDB = db.Connect()
 
 	RunSpecs(t, "Notabbble Suite")
-
-	DeleteAllData()
 }
 
 func DeleteAllData() {

@@ -1,4 +1,4 @@
-package notabbble
+package main
 
 import (
 	"github.com/codegangsta/martini"
@@ -29,7 +29,7 @@ func InitServer() *martini.ClassicMartini {
 		r.HTML(200, "home", "")
 	})
 	m.Get("/api/projects", controllers.ProjectIndex)
-	m.Get("/api/project/:id", controllers.ProjectGet)
+	m.Get("/api/projects/:id", controllers.ProjectGet)
 	m.Get("/api/projects/new", controllers.ProjectNew)
 	m.Post("/api/projects", binding.Bind(models.Project{}), controllers.ProjectCreate)
 	m.Put("/api/projects/:id", binding.Bind(models.Project{}), controllers.ProjectCreate)
