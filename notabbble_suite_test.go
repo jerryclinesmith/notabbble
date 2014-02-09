@@ -1,6 +1,7 @@
 package notabbble_test
 
 import (
+	"bytes"
 	"github.com/codegangsta/martini"
 	"github.com/jerryclinesmith/notabbble"
 	"github.com/jerryclinesmith/notabbble/db"
@@ -8,6 +9,8 @@ import (
 	"github.com/jinzhu/gorm"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
@@ -29,4 +32,11 @@ func TestNotabbble(t *testing.T) {
 
 func DeleteAllData() {
 	TestDB.Where("id > 0").Delete(&models.Project{})
+}
+
+func Request(method string, url string, body []byte) *httptest.ResponseRecorder {
+	request, _ := http.NewRequest(method, url, bytes.NewReader(body))
+	response := httptest.NewRecorder()
+	Server.ServeHTTP(response, request)
+	return response
 }

@@ -5,8 +5,6 @@ import (
 	"github.com/jerryclinesmith/notabbble/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"net/http"
-	"net/http/httptest"
 	"time"
 )
 
@@ -21,12 +19,11 @@ var _ = Describe("Project", func() {
 		Context("Without existing projects", func() {
 
 			It("returns empty array", func() {
-				request, _ := http.NewRequest("GET", "/api/projects", nil)
-				response := httptest.NewRecorder()
-				Server.ServeHTTP(response, request)
+				response := Request("GET", "/api/projects", nil)
+
 				Expect(response.Code).To(Equal(200))
-				// expectedJSON, _ := json.Marshal([]models.Project{})
-				// 				Expect(response.Body).To(Equal(expectedJSON))
+				expectedJSON, _ := json.Marshal([]models.Project{})
+				Expect(response.Body).To(MatchJSON(expectedJSON))
 			})
 
 		})
@@ -42,9 +39,8 @@ var _ = Describe("Project", func() {
 			})
 
 			It("returns projects", func() {
-				request, _ := http.NewRequest("GET", "/api/projects", nil)
-				response := httptest.NewRecorder()
-				Server.ServeHTTP(response, request)
+				response := Request("GET", "/api/projects", nil)
+
 				Expect(response.Code).To(Equal(200))
 				expectedJSON, _ := json.Marshal(projects)
 				Expect(response.Body).To(MatchJSON(expectedJSON))
