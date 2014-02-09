@@ -5,6 +5,7 @@ import (
 	"github.com/jerryclinesmith/notabbble/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
+	"log"
 	"time"
 )
 
@@ -33,8 +34,12 @@ var _ = Describe("Project", func() {
 			var projects []models.Project
 
 			BeforeEach(func() {
-				TestDB.Save(models.Project{Name: "My Project", CreatedAt: time.Now(), UpdatedAt: time.Now()})
-				TestDB.Save(models.Project{Name: "My Other Project", CreatedAt: time.Now(), UpdatedAt: time.Now()})
+				if err := TestDB.Save(models.Project{Name: "My Project", CreatedAt: time.Now(), UpdatedAt: time.Now()}).Error; err != nil {
+					log.Fatal(err)
+				}
+				if err := TestDB.Save(models.Project{Name: "My Other Project", CreatedAt: time.Now(), UpdatedAt: time.Now()}).Error; err != nil {
+					log.Fatal(err)
+				}
 				TestDB.Find(&projects)
 			})
 
