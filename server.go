@@ -1,4 +1,4 @@
-package main
+package notabbble
 
 import (
 	"github.com/codegangsta/martini"
@@ -9,7 +9,7 @@ import (
 	"github.com/jerryclinesmith/notabbble/models"
 )
 
-func main() {
+func InitServer() *martini.ClassicMartini {
 	m := martini.Classic()
 	m.Map(db.Connect())
 
@@ -27,5 +27,10 @@ func main() {
 	m.Put("/api/projects/:id", binding.Bind(models.Project{}), controllers.ProjectCreate)
 	m.Delete("/api/projects/:id", controllers.ProjectCreate)
 
+	return m
+}
+
+func main() {
+	m := InitServer()
 	m.Run()
 }

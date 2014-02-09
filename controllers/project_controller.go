@@ -9,7 +9,7 @@ import (
 )
 
 func ProjectIndex(db gorm.DB, r render.Render) {
-	var projects []models.Project
+	projects := []models.Project{}
 	db.Find(&projects)
 	r.JSON(200, projects)
 }
