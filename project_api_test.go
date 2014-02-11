@@ -88,4 +88,31 @@ var _ = Describe("Project", func() {
 		})
 	})
 
+	Describe("Project New", func() {
+
+		It("returns a blank project", func() {
+			response := Request("GET", "/api/projects/new", nil)
+
+			Expect(response.Code).To(Equal(200))
+			expectedJSON, _ := json.Marshal(models.Project{})
+			Expect(response.Body).To(MatchJSON(expectedJSON))
+		})
+
+	})
+
+	Describe("Project Create", func() {
+
+		It("inserts the project", func() {
+			project := models.Project{Name: "A New Project"}
+			postJSON, _ := json.Marshal(project)
+			response := Request("POST", "/api/projects/", postJSON)
+
+			Expect(response.Code).To(Equal(201))
+			var savedProject models.Project
+			json.Unmarshal(response.Body.Bytes(), &savedProject)
+			Expect(savedProject.Id).To(BeNumerically(">", 0))
+			Expect(savedProject.Name).To(Equal("A New Project"))
+		})
+	})
+
 })
