@@ -31,7 +31,7 @@ func ProjectNew(r render.Render) {
 func ProjectCreate(db gorm.DB, r render.Render, project models.Project) {
 	project.CreatedAt = time.Now()
 	project.UpdatedAt = time.Now()
-	db.Save(project)
+	db.Save(&project)
 	r.JSON(201, project)
 }
 
@@ -45,7 +45,7 @@ func ProjectUpdate(db gorm.DB, r render.Render, params martini.Params, updatedPr
 	project.Name = updatedProject.Name
 	project.UpdatedAt = time.Now()
 
-	db.Save(project)
+	db.Save(&project)
 	r.JSON(201, project)
 }
 
