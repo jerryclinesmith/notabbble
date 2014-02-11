@@ -56,5 +56,5 @@ func ProjectDelete(db gorm.DB, r render.Render, params martini.Params) {
 		return
 	}
 	db.Delete(project)
-	r.JSON(200, project)
+	r.JSON(204, nil)
 }

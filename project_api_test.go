@@ -137,7 +137,6 @@ var _ = Describe("Project", func() {
 				if err := TestDB.Save(&project).Error; err != nil {
 					log.Fatal(err)
 				}
-				TestDB.First(&project, project.Id) // Need to reload - times are truncated by the db
 			})
 		
 			It("updates an existing project", func() {
@@ -151,6 +150,40 @@ var _ = Describe("Project", func() {
 				json.Unmarshal(response.Body.Bytes(), &savedProject)
 				Expect(savedProject.Id).To(Equal(project.Id))
 				Expect(savedProject.Name).To(Equal("A Changed Project"))	
+			})
+
+		})
+		
+	})
+	
+	Describe("Project Delete", func() {
+		
+		Context("when project doesn't exist", func() {
+
+			It("should return 404", func() {
+				response := Request("DELETE", "/api/projects/1", nil)
+				Expect(response.Code).To(Equal(404))
+			})
+
+		})
+		
+		Context("when project does exist", func() {
+			
+			var project models.Project
+
+			BeforeEach(func() {
+				project = models.Project{Name: "My Project", CreatedAt: time.Now(), UpdatedAt: time.Now()}
+				if err := TestDB.Save(&project).Error; err != nil {
+					log.Fatal(err)
+				}
+			})
+		
+			It("deletes an existing project", func() {
+				url := fmt.Sprint("/api/projects/", project.Id)
+				response := Request("DELETE", url, nil)
+		
+				Expect(response.Code).To(Equal(204))
+				Expect(TestDB.First(&project, project.Id).Error).ToNot(BeNil())
 			})
 
 		})
