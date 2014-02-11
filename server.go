@@ -33,7 +33,7 @@ func InitServer() *martini.ClassicMartini {
 	m.Get("/api/projects/:id", controllers.ProjectGet)
 	m.Post("/api/projects", binding.Bind(models.Project{}), controllers.ProjectCreate)
 	m.Put("/api/projects/:id", binding.Bind(models.Project{}), controllers.ProjectUpdate)
-	m.Delete("/api/projects/:id", controllers.ProjectCreate)
+	m.Delete("/api/projects/:id", controllers.ProjectDelete)
 
 	return m
 }
