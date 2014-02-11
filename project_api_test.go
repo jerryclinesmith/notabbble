@@ -114,5 +114,47 @@ var _ = Describe("Project", func() {
 			Expect(savedProject.Name).To(Equal("A New Project"))
 		})
 	})
+	
+	Describe("Project Update", func() {
+		
+		Context("when project doesn't exist", func() {
+
+			It("should return 404", func() {
+				updateProject := models.Project{Name: "A Changed Project"}
+				putJSON, _ := json.Marshal(updateProject)
+				response := Request("PUT", "/api/projects/1", putJSON)
+				Expect(response.Code).To(Equal(404))
+			})
+
+		})
+		
+		Context("when project does exist", func() {
+			
+			var project models.Project
+
+			BeforeEach(func() {
+				project = models.Project{Name: "My Project", CreatedAt: time.Now(), UpdatedAt: time.Now()}
+				if err := TestDB.Save(&project).Error; err != nil {
+					log.Fatal(err)
+				}
+				TestDB.First(&project, project.Id) // Need to reload - times are truncated by the db
+			})
+		
+			It("updates an existing project", func() {
+				updateProject := models.Project{Name: "A Changed Project"}
+				putJSON, _ := json.Marshal(updateProject)
+				url := fmt.Sprint("/api/projects/", project.Id)
+				response := Request("PUT", url, putJSON)
+		
+				Expect(response.Code).To(Equal(200))
+				var savedProject models.Project
+				json.Unmarshal(response.Body.Bytes(), &savedProject)
+				Expect(savedProject.Id).To(Equal(project.Id))
+				Expect(savedProject.Name).To(Equal("A Changed Project"))	
+			})
+
+		})
+		
+	})
 
 })

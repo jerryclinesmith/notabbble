@@ -46,7 +46,7 @@ func ProjectUpdate(db gorm.DB, r render.Render, params martini.Params, updatedPr
 	project.UpdatedAt = time.Now()
 
 	db.Save(&project)
-	r.JSON(201, project)
+	r.JSON(200, project)
 }
 
 func ProjectDelete(db gorm.DB, r render.Render, params martini.Params) {
